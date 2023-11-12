@@ -4,6 +4,7 @@ import MemberForm from './Components/NewMemberForm';
 import MemberList from './Components/MemberList';
 import UpdateForm from "./Components/UpdateForm"
 import bootstrap from '../node_modules/bootstrap/dist/css/bootstrap.css'
+import Buttons from './Components/Buttons';
 
 
 function App() {
@@ -36,17 +37,17 @@ function App() {
 
   }
 
-  const updateUser = (e, userObject) => {
+  const updateUser = (e, user) => {
 
     e.preventDefault()
     let updatedUserObject = {
-      ...userObject,
+      ...user,
       memberName: updatedName,
       memberAge: updatedAge,
       memberWeight: updatedWeight,
     }
 
-    fetch(`${GYM_ENDPOINT}/${userObject.id}`, {
+    fetch(`${GYM_ENDPOINT}/${user.id}`, {
       method: 'PUT',
       body: JSON.stringify(updatedUserObject),
       headers: {'Content-Type': 'application/json'}
@@ -81,7 +82,7 @@ function App() {
         Gym
       </div>
       <div>
-      <MemberForm 
+      <MemberForm
       setNewMemberName={setNewMemberName} 
       setNewMemberAge={setNewMemberAge}
       setNewMemberWeight={setNewMemberWeight}
@@ -92,26 +93,17 @@ function App() {
       <button className='btn btn-success btn-lg mt-2' onClick={(e) => postNewUser(e)}>Post</button>
       </div>
       <div>
-        {member.map((user, index) => (
-          <>
-          <div className='border border-dark border-3 mt-3'>
-          <MemberList 
-          member={member}
+        <MemberList
+            member={member}
+            setUpdatedName={setUpdatedName} 
+            setUpdatedAge={setUpdatedAge}
+            setUpdatedWeight={setUpdatedWeight}
+            updatedName={updatedName}
+            updatedAge={updatedAge}
+            updatedWeight={updatedWeight}
+            updateUser={updateUser}
+            deleteUser={deleteUser}
           />
-          <button className='btn btn-danger btn-lg mt-2' onClick={() => deleteUser(user.id)}>Delete</button>
-
-          <UpdateForm 
-          setUpdatedName={setUpdatedName} 
-          setUpdatedAge={setUpdatedAge}
-          setUpdatedWeight={setUpdatedWeight}
-          updatedName={updatedName}
-          updatedAge={updatedAge}
-          updatedWeight={updatedWeight}
-          />
-          <button className='btn btn-success btn-lg mt-2' onClick={(e) => updateUser(e, user)}>Update</button>
-          </div>
-          </>
-        ))}
       </div>
     </div>
   );
